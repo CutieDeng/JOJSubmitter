@@ -18,7 +18,7 @@ import java.util.stream.Stream;
  * <p/>
  *
  */
-public class BlockParser implements Parser{
+public class BlockParser implements Parser, AutoCloseable{
 
     private static class CharBufferImpl implements AutoCloseable{
 
@@ -72,6 +72,14 @@ public class BlockParser implements Parser{
 
     public BlockParser(InputStream stream) {
         cImpl = new CharBufferImpl(new InputStreamReader(stream));
+    }
+
+    public BlockParser(Reader reader) {
+        cImpl = new CharBufferImpl(reader);
+    }
+
+    public BlockParser(BufferedReader reader) {
+        cImpl = new CharBufferImpl(reader);
     }
 
     private StringBuilder cache = new StringBuilder();
@@ -208,6 +216,11 @@ public class BlockParser implements Parser{
                 this.cache.append(r);
             }
         }
+    }
+
+    @Override
+    public void close() throws Exception {
+        this.cImpl.close();
     }
 
 }
