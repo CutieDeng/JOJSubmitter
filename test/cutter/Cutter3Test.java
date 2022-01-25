@@ -13,7 +13,7 @@ public class Cutter3Test {
     public static void main(String[] args) throws FileNotFoundException {
         final CodeList list = new CodeList(new FileInputStream(Paths.get("test", "fortest", "Hello2.java").toFile()));
         list.init();
-        final String codes = list.getList().stream().map(TokenRecord::content).map(AtomicReference::get).collect(Collectors.joining("|"));
+        final String codes = list.getList().stream().map(TokenRecord::content).map(AtomicReference::get).collect(Collectors.joining("|", "|", ""));
         System.out.println(codes);
     }
 }
