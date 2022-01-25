@@ -150,5 +150,34 @@ public class Rabbit implements Cloneable{
 - 如何在 *IDEA platform* 下找到提供对剪贴板控制的方法。
 - 如何保证该方法的稳定性/鲁棒性——在剪贴板空间容量不足、无法获取等情况下能够正确提供异常相关的信息反馈。
 
-### 
+## Version 1
 
+<div align="right">Sun Jan 23 17:43:37 CST 2022
+</div>
+
+Description: This is the first version. Using this plugin, you can easily get your codes in your clipboard to submit in your Online Judge website. 
+
+### Code Dealing Automata 
+
+We determine some patterns to express the *Java* codes. 
+
+# 简易 Java 词法分析器 Version 2 
+
+现列出我们目前对 Java 的语法假设：
+
+- 双引号包含的部分为「字符串直接量」，其优先级高于注释描述。
+- 注释描述分 `//` 和 `/* ... */` 两类，进入注释后其优先级高于字符串。其中，`//`、`/* ... */` 两种注释并行运行，互不影响干涉！
+- 类名分析，考虑将类名也统一划分在一起。
+
+考虑几种特殊的 token 描述： `->` 与 `-` 需要特殊判断 - 后面的符号以便决议接下来的结果。
+同理，除号 `/` 和 注释描述符号 `//`, `/*` 需要等待下一个字符描述以便决议结果！
+
+因此，词法分析器有如下四种状态描述：
+- 普通状态，一般情形的词法读入都在该状态进行。
+- 字符串描述状态，该状态需要等待一个双引号以便退出该状态。
+- 注释豁免状态，该状态获取的字符都应忽略不计。
+- 等待词法决议状态，负责分析接下来需要决议的词语以及结果！
+
+常见的需词法决议的修饰符如下：
+- `<=`, `>=`, `==`, `!=`
+- `&&`, `||` 

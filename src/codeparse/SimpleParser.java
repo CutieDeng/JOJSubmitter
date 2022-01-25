@@ -1,7 +1,6 @@
 package codeparse;
 
 import java.io.*;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
 
@@ -84,6 +83,7 @@ public class SimpleParser {
                                 }
                             }
                             default -> {
+                                assert chars[position] != '\t';
                                 builder.append(chars[position++]);
                             }
                         }
@@ -145,7 +145,7 @@ public class SimpleParser {
         File file = Paths.get("test", "fortest", "HelloWorld.java").toFile();
         InputStream stream = new FileInputStream(file);
         var parser = new SimpleParser(stream);
-        for (var s = parser.nextToken(); s != null; s = parser.nextToken()) {
+        for (var s = parser.nextToken(); s != null && s.length() > 0; s = parser.nextToken()) {
             System.out.println(s);
         }
     }
