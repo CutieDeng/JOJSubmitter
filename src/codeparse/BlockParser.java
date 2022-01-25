@@ -85,12 +85,12 @@ public class BlockParser implements Parser, AutoCloseable{
     private StringBuilder cache = new StringBuilder();
 
     private static final Set<Character> separateSet = Stream.of('{', '}', '[', ']', '(', ')', ';', '.', ',', '+', '%',
-                    '*', '<', '>', '=', '|', '&', '!')
+                    '*', '<', '>', '=', '|', '&', '!', '^')
             .collect(Collectors.toSet());
 
     private static final Set<Character> blankSet = Stream.of(' ', '\t', '\n').collect(Collectors.toSet());
 
-    private static final Map<String, AtomicReference<String>> cacheRef = new HashMap<>();
+    private final Map<String, AtomicReference<String>> cacheRef = new HashMap<>();
 
     private boolean lineNotion = false;
     private boolean blockNotion = false;
@@ -221,6 +221,13 @@ public class BlockParser implements Parser, AutoCloseable{
     @Override
     public void close() throws Exception {
         this.cImpl.close();
+    }
+
+    public boolean transfer(String origin, String out) {
+        if (!cacheRef.containsKey(origin))
+            return false;
+        cacheRef.get(origin).set(out);
+        return true;
     }
 
 }
